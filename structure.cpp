@@ -1,35 +1,38 @@
-// A structure is collection of variables of different data types under a single name.
-#include<iostream>
+#include <iostream>
+#include<stack>
+#include <sstream>
 using namespace std;
 
-// How to declare a structure in c++
-struct info
-{
-    string name;
-    string dept;
-    float marks;
-};
+string simplifyPath(string path) {
+    stack<string> st;
+    stringstream ss(path);
+    string token;
+    
+    while (getline(ss, token, '/')) {
+        cout<<token<<endl;
+        if (token == "." || token == "") {
+            continue;
+        }
+        if (token == "..") {
+            if (!st.empty()) {
+                st.pop();
+            }
+        } else {
+            st.push(token);
+        }
+    }
 
-int main(){
-    info p1;
+    string result = "";
+    while (!st.empty()) {
+        result = "/" + st.top() + result;
+        st.pop();
+    }
+    return result.empty() ? "/" : result;
+}
 
-    // Storing information 
-    cout<<"Enter name of student :";
-    getline(cin,p1.name);
-    cout<<"Enter Dept_Name :";
-    getline(cin,p1.dept);
-    cout<<"Enter marks obtained :";
-    cin>>p1.marks;
-
-    cout<<endl;
-
-    // Displaying information
-
-    cout<<"Name: "<<p1.name<<endl;
-    cout<<"Dept_name: "<<p1.dept<<endl;
-    cout<<"Marks obtained: "<<p1.marks<<endl;
+int main() {
+    string path = "/home/user/Documents/../Pictures";
+    cout << simplifyPath(path) << endl;
 
     return 0;
-
 }
-// we are using getline() function to clear the input buffer after reading string.
